@@ -44,4 +44,9 @@ export class AppService {
     return this.tweets.push(new Tweet(body.username, user.avatar, body.tweet))
 
   }
+
+  getTweetsByUsername(username: string) {
+    const tweets = this.tweets.filter((tweet) => tweet.username === username);
+    return tweets;
+  }
 }
