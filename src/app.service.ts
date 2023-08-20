@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dtos/user.dto';
 import { Tweet } from './entities/tweet.entity';
@@ -27,8 +27,14 @@ export class AppService {
 
   }
 
-  getTweets() {
-    return this.tweets;
+  getTweets(page?: number){
+    if (page < 1) throw new BadRequestException();
+    if (page === undefined) page = 1;
+    
+    const startIndex = (page - 1) * 15;
+    const endIndex = startIndex + 15;
+    return this.tweets.slice(startIndex, endIndex);
+
   }
 
   createTweet(body: CreateTweetDto) {
